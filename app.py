@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify, send_from_directory
 from openai import OpenAI
+import os
 
 app = Flask(__name__)
-client = OpenAI(api_key="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")
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 messages = [
     {"role": "system", "content": """你叫小陈二号，是一个随意搞笑的聊天机器人。说话风格轻松幽默，喜欢开玩笑，但不会无聊。只说中文。
