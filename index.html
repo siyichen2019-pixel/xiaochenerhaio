@@ -5,37 +5,35 @@
     <title>小陈二号</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #1a0a2e; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; }
-        .header { background: #2d1054; padding: 16px; text-align: center; border-bottom: 1px solid #6b21a8; }
-        .header-title { color: #e9d5ff; font-size: 22px; font-weight: bold; letter-spacing: 2px; }
-        .header-sub { color: #a855f7; font-size: 13px; margin-top: 4px; }
-        #chatbox { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+        body { background: #fff0f5; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; }
+        .header { background: #fbeaf0; padding: 16px; text-align: center; border-bottom: 1px solid #f4c0d1; }
+        .header-title { color: #72243e; font-size: 22px; font-weight: bold; letter-spacing: 1px; }
+        #chatbox { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; background: #fff8fb; }
         .msg { display: flex; flex-direction: column; max-width: 75%; }
         .msg.user { align-self: flex-end; align-items: flex-end; }
         .msg.bot { align-self: flex-start; align-items: flex-start; }
-        .bot-name { font-size: 11px; color: #a855f7; margin-bottom: 3px; }
-        .bubble { padding: 12px 16px; border-radius: 18px; font-size: 15px; line-height: 1.6; }
-        .user .bubble { background: #7c3aed; color: #f3e8ff; border-bottom-right-radius: 4px; }
-        .bot .bubble { background: #2d1054; color: #e9d5ff; border: 1px solid #6b21a8; border-bottom-left-radius: 4px; }
-        .inputarea { display: flex; gap: 10px; padding: 16px; background: #2d1054; border-top: 1px solid #6b21a8; }
-        #input { flex: 1; background: #1a0a2e; border: 1px solid #6b21a8; border-radius: 24px; padding: 10px 18px; color: #e9d5ff; font-size: 15px; outline: none; }
-        #input::placeholder { color: #7c3aed; }
-        button { background: #7c3aed; border: none; border-radius: 24px; padding: 10px 22px; color: white; font-size: 15px; cursor: pointer; }
-        button:hover { background: #6d28d9; }
-        .deco { text-align: center; padding: 8px; color: #6b21a8; font-size: 12px; background: #1a0a2e; }
+        .bot-name { font-size: 11px; color: #993556; margin-bottom: 3px; }
+        .bubble { padding: 12px 16px; font-size: 15px; line-height: 1.6; }
+        .user .bubble { background: #d4537e; color: #fbeaf0; border-radius: 18px 18px 4px 18px; }
+        .bot .bubble { background: #fbeaf0; color: #72243e; border: 1px solid #f4c0d1; border-radius: 18px 18px 18px 4px; }
+        .inputarea { display: flex; gap: 10px; padding: 16px; background: #fbeaf0; border-top: 1px solid #f4c0d1; }
+        #input { flex: 1; background: white; border: 1px solid #f4c0d1; border-radius: 24px; padding: 10px 18px; color: #72243e; font-size: 15px; outline: none; }
+        #input::placeholder { color: #f4c0d1; }
+        button { background: #d4537e; border: none; border-radius: 24px; padding: 10px 22px; color: white; font-size: 15px; cursor: pointer; }
+        button:hover { background: #993556; }
+        .deco { text-align: center; padding: 8px; color: #993556; font-size: 12px; background: #fbeaf0; }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="header-title">🖤 小陈二号 🖤</div>
-        <div class="header-sub">库洛米の专属助手</div>
+        <div class="header-title">🌸 小陈二号 🌸</div>
     </div>
     <div id="chatbox"></div>
     <div class="inputarea">
         <input id="input" type="text" placeholder="说点什么..." />
         <button onclick="sendMessage()">发送</button>
     </div>
-    <div class="deco">🖤 powered by 小陈二号 🖤</div>
+    <div class="deco">🌸 powered by 小陈二号</div>
     <script>
         async function sendMessage() {
             const input = document.getElementById("input");
