@@ -40,6 +40,9 @@
             const msg = input.value.trim();
             if (!msg) return;
             addMessage(msg, "user");
+            if(msg.includes("陈思怡")){
+                floatHearts()
+            }
             input.value = "";
             const res = await fetch("/chat", {
                 method: "POST",
@@ -64,6 +67,29 @@
         document.getElementById("input").addEventListener("keypress", function(e) {
             if (e.key === "Enter") sendMessage();
         });
+function floatHearts(){
+    for(let i = 0; i<30; i++){
+        setTimeout(()=>{
+            const heart =document.createElement("div")
+            heart.innerHTML = "❤️"
+            heart.style.position = "fixed"
+            heart.style.left = Math.random()*100+"vw"
+            heart.style.top = "100vh"
+            heart.style.fontSize = Math.random()*20+20+"px"
+            heart.style.transition ="all 3s ease"
+            heart.style.zIndex ="999"
+            heart.style.pointerEvents ="none"
+            document.body.appenChild(heart)
+            setTimeout(()=>{
+                heart.style.top ="-10vh"
+                heart.style.opacity="0"
+            },100)
+            setTimeout(()=>{
+                heart.remove()
+            },3000
+        },i*100)
+    }
+}
     </script>
 </body>
 </html>
