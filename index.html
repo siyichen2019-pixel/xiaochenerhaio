@@ -79,14 +79,14 @@ function floatHearts(){
             heart.style.transition ="all 3s ease"
             heart.style.zIndex ="999"
             heart.style.pointerEvents ="none"
-            document.body.appenChild(heart)
+            document.body.appendChild(heart)
             setTimeout(()=>{
                 heart.style.top ="-10vh"
                 heart.style.opacity="0"
             },100)
             setTimeout(()=>{
                 heart.remove()
-            },3000
+            },3000)
         },i*100)
     }
 }
