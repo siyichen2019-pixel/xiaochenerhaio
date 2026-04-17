@@ -22,6 +22,87 @@
         button { background: #d4537e; border: none; border-radius: 24px; padding: 10px 22px; color: white; font-size: 15px; cursor: pointer; }
         button:hover { background: #993556; }
         .deco { text-align: center; padding: 8px; color: #993556; font-size: 12px; background: #fbeaf0; }
+
+        /* 隐藏玩法按钮 */
+        #secret-btn {
+            display: none;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #ff6b9d, #c44569);
+            border: none;
+            border-radius: 24px;
+            padding: 12px 28px;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            animation: pulse 1s infinite;
+            box-shadow: 0 4px 15px rgba(212, 83, 126, 0.4);
+        }
+        #secret-btn:hover { background: linear-gradient(135deg, #c44569, #993556); }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(212, 83, 126, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 6px 20px rgba(212, 83, 126, 0.7); }
+        }
+        .secret-btn-wrap {
+            display: flex;
+            justify-content: center;
+            padding: 10px 0 4px;
+        }
+
+        /* 弹出层 */
+        #easter-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        #easter-overlay.show {
+            display: flex;
+        }
+        #easter-box {
+            background: #fff0f5;
+            border-radius: 24px;
+            padding: 40px 36px;
+            text-align: center;
+            max-width: 320px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(114, 36, 62, 0.25);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        #easter-dog {
+            font-size: 80px;
+            margin-bottom: 16px;
+            display: block;
+            animation: wiggle 0.5s ease infinite alternate;
+        }
+        @keyframes wiggle {
+            from { transform: rotate(-8deg); }
+            to { transform: rotate(8deg); }
+        }
+        #easter-text {
+            font-size: 22px;
+            font-weight: bold;
+            color: #72243e;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        #easter-close {
+            background: #d4537e;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 28px;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        #easter-close:hover { background: #993556; }
     </style>
 </head>
 <body>
@@ -29,20 +110,66 @@
         <div class="header-title">🌸 小陈二号 🌸</div>
     </div>
     <div id="chatbox"></div>
+
+    <!-- 隐藏玩法按钮，平时隐藏 -->
+    <div class="secret-btn-wrap">
+        <button id="secret-btn" onclick="triggerEasterEgg()">🐾 激活隐藏玩法！</button>
+    </div>
+
     <div class="inputarea">
         <input id="input" type="text" placeholder="说点什么..." />
         <button onclick="sendMessage()">发送</button>
     </div>
     <div class="deco">🌸 powered by 小陈二号</div>
+
+    <!-- 彩蛋弹出层 -->
+    <div id="easter-overlay" onclick="closeEasterEgg()">
+        <div id="easter-box" onclick="event.stopPropagation()">
+            <span id="easter-dog">🖕🐶</span>
+            <div id="easter-text">你个傻逼<br>上当了吧！😂</div>
+            <button id="easter-close" onclick="closeEasterEgg()">哎呀我好蠢</button>
+        </div>
+    </div>
+
     <script>
+        // 隐藏玩法关键词列表
+        const secretKeywords = [
+            "彩蛋", "隐藏玩法", "秘密", "有什么秘密", "有没有彩蛋",
+            "隐藏功能", "有什么彩蛋", "有没有隐藏", "有没有秘密",
+            "解锁", "特殊玩法", "秘籍", "暗号", "密码", "有什么好玩的",
+            "还有什么", "有啥彩蛋", "有啥秘密", "有啥隐藏"
+        ];
+
+        function checkSecretTrigger(msg) {
+            return secretKeywords.some(kw => msg.includes(kw));
+        }
+
+        function showSecretBtn() {
+            const btn = document.getElementById("secret-btn");
+            btn.style.display = "inline-block";
+        }
+
+        function triggerEasterEgg() {
+            document.getElementById("easter-overlay").classList.add("show");
+            // 按钮完成任务，隐藏掉
+            document.getElementById("secret-btn").style.display = "none";
+        }
+
+        function closeEasterEgg() {
+            document.getElementById("easter-overlay").classList.remove("show");
+        }
+
         async function sendMessage() {
             const input = document.getElementById("input");
             const msg = input.value.trim();
             if (!msg) return;
             addMessage(msg, "user");
-            if(msg.includes("陈思怡")){
-                floatHearts()
-            }
+
+            if (msg.includes("陈思怡")) floatHearts();
+
+            // 检测隐藏玩法关键词
+            if (checkSecretTrigger(msg)) showSecretBtn();
+
             input.value = "";
             const res = await fetch("/chat", {
                 method: "POST",
@@ -52,6 +179,7 @@
             const data = await res.json();
             addMessage(data.reply, "bot");
         }
+
         function addMessage(text, who) {
             const box = document.getElementById("chatbox");
             const div = document.createElement("div");
@@ -64,32 +192,29 @@
             box.appendChild(div);
             box.scrollTop = box.scrollHeight;
         }
+
         document.getElementById("input").addEventListener("keypress", function(e) {
             if (e.key === "Enter") sendMessage();
         });
-function floatHearts(){
-    for(let i = 0; i<30; i++){
-        setTimeout(()=>{
-            const heart =document.createElement("div")
-            heart.innerHTML = "❤️"
-            heart.style.position = "fixed"
-            heart.style.left = Math.random()*100+"vw"
-            heart.style.top = "100vh"
-            heart.style.fontSize = Math.random()*20+20+"px"
-            heart.style.transition ="all 3s ease"
-            heart.style.zIndex ="999"
-            heart.style.pointerEvents ="none"
-            document.body.appendChild(heart)
-            setTimeout(()=>{
-                heart.style.top ="-10vh"
-                heart.style.opacity="0"
-            },100)
-            setTimeout(()=>{
-                heart.remove()
-            },3000)
-        },i*100)
-    }
-}
+
+        function floatHearts() {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement("div");
+                    heart.innerHTML = "❤️";
+                    heart.style.position = "fixed";
+                    heart.style.left = Math.random() * 100 + "vw";
+                    heart.style.top = "100vh";
+                    heart.style.fontSize = Math.random() * 20 + 20 + "px";
+                    heart.style.transition = "all 3s ease";
+                    heart.style.zIndex = "999";
+                    heart.style.pointerEvents = "none";
+                    document.body.appendChild(heart);
+                    setTimeout(() => { heart.style.top = "-10vh"; heart.style.opacity = "0"; }, 100);
+                    setTimeout(() => { heart.remove(); }, 3000);
+                }, i * 100);
+            }
+        }
     </script>
 </body>
 </html>
